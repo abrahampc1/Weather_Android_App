@@ -1,5 +1,7 @@
 package com.example.weather_android_app.mainModule.viewModel
 
+import android.view.View
+import android.widget.ProgressBar
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
