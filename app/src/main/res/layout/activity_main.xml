@@ -15,6 +15,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".mainModule.view.MainActivity">
+        <!--
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        -->
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/txtZone"
             android:textAppearance="?attr/textAppearanceHeadline4"
@@ -39,86 +44,61 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/txtZone"/>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
+        <include
+            android:id="@+id/current"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/currentTittle"
-            android:paddingHorizontal="16dp"
-            android:paddingVertical="8dp">
+            layout="@layout/item_weather"
+            app:current="@{viewModel.result.current}"
+            app:isGone = "@{!viewModel.isLoad()}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/currentTittle"/>
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/txtTemp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?attr/textAppearanceHeadline6"
-                android:textColor="?attr/colorSecondary"
-                android:text="@{@string/temp_weather(viewModel.result.current.temp)}"
-                tools:text="234.2°F"
-                android:gravity="center"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/txtDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?attr/textAppearanceBody1"
-                android:text="@{@string/dt_weather(CommonUtils.INSTANCE.getHour(viewModel.result.current.dt))}"
-                tools:text="22:00"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/txtHumidity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?attr/textAppearanceOverline"
-                android:text="@{@string/humidity_weather(viewModel.result.current.humidity)}"
-                tools:text="Humidity: 65%"
-                app:layout_constraintStart_toStartOf="@id/txtDate"
-                app:layout_constraintTop_toBottomOf="@id/txtDate"/>
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/txtMain"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?attr/textAppearanceBody1"
-                android:text="@{CommonUtils.INSTANCE.getWeatherMain(viewModel.result.current.weather)}"
-                tools:text="Clouds"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/txtDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?attr/textAppearanceCaption"
-                android:text="@{CommonUtils.INSTANCE.getWeatherDescription(viewModel.result.current.weather)}"
-                tools:text="Few clouds"
-                app:layout_constraintEnd_toEndOf="@id/txtMain"
-                app:layout_constraintTop_toBottomOf="@id/txtMain"/>
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/forecastTittle"
+            android:textAppearance="?attr/textAppearanceHeadline5"
+            android:text="@string/forecast_weather"
+            app:isGone = "@{!viewModel.isLoad()}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="?attr/colorPrimary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/current"/>
         
-        <com.google.android.material.progressindicator.LinearProgressIndicator
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            tools:listitem="@layout/item_weather"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/forecastTittle"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        
+        <ProgressBar
+            android:id="@+id/pb"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:indeterminate="true"
-            app:isGone = "@{!viewModel.isLoad()}"
+            app:isGone="@{viewModel.isLoad}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/txtZone"
             app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Obteniendo datos"
+            app:isGone="@{viewModel.isLoad}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:layout_marginTop="5dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/pb"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
