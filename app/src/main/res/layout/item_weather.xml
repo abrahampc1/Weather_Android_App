@@ -10,6 +10,9 @@
                 <variable
                     name="current"
                     type="com.example.weather_android_app.common.entities.Current" />
+                <variable
+                    name="forecast"
+                    type="com.example.weather_android_app.common.entities.Forecast" />
         </data>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -24,7 +27,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?attr/textAppearanceHeadline6"
                     android:textColor="?attr/colorSecondary"
-                    android:text="@{@string/temp_weather(current.temp)}"
+                    android:text="@{current != null ? @string/temp_weather(current.temp) : @string/temp_weather(forecast.temp)}"
                     tools:text="234.2°F"
                     android:gravity="center"
                     app:layout_constraintStart_toStartOf="parent"
@@ -36,7 +39,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?attr/textAppearanceBody1"
-                    android:text="@{@string/dt_weather(CommonUtils.INSTANCE.getHour(current.dt))}"
+                    android:text="@{current != null ? @string/dt_weather(CommonUtils.INSTANCE.getHour(current.dt)) : (CommonUtils.INSTANCE.getFullDate(forecast.dt))}"
                     tools:text="22:00"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"/>
